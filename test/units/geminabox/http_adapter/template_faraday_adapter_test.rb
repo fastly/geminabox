@@ -34,8 +34,8 @@ module Geminabox
     end
 
     def test_set_auth
-      stub_request(:get, "http://foo:bar@example.com/").
-         to_return(:status => 200, :body => @default, :headers => {})
+      stub_request(:get, "http://example.com/").
+        to_return(:status => 200, :body => @default, :headers => {'Authorization' => Base64.encode64("foo:bar").strip})
 
       connection = @http_adapter.set_auth('http://example.com', 'foo', 'bar')
       response = connection.get('http://example.com')
