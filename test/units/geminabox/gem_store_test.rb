@@ -40,6 +40,18 @@ module Geminabox
       end
     end
 
+    def test_ensure_gem_unique
+      file = File.open(GemFactory.gem_file(:example, :platform => "x86_64-linux"))
+      gem = Geminabox::IncomingGem.new(file)
+
+      gem_file = GemStore.new gem
+      gem_file.save
+
+      assert_gem_store_error('409', 'you uploaded the same thing previously') do
+        gem_file.save
+      end
+    end
+
     private
     def assert_gem_store_error(code, message, &block)
       assert_raises GemStoreError do
